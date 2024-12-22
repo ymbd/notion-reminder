@@ -1,0 +1,30 @@
+name: Run Python Script Daily
+
+# 定期実行のスケジュールを設定
+on:
+  schedule:
+    - cron: "0 9 * * *"  # 毎日9時（UTC）に実行
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest  # Linux環境で実行
+
+    steps:
+      # コードをリポジトリから取得
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Pythonをセットアップ
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8  # 使用するPythonバージョン
+
+      # 依存ライブラリのインストール
+      - name: Install dependencies
+        run: |
+          pip install requests schedule  # 必要なライブラリを記述
+
+      # Pythonスクリプトを実行
+      - name: Run script
+        run: python notion_reminder.py
